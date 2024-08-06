@@ -15,8 +15,8 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    post_text: {
-      type: DataTypes.STRING,
+    post_content: { // Make sure this matches the database column name
+      type: DataTypes.TEXT,
       allowNull: false
     },
     user_id: {
@@ -29,10 +29,11 @@ Post.init(
   },
   {
     sequelize,
+    timestamps: true, // Ensure this is enabled if you are using created_at and updated_at
     freezeTableName: true,
     underscored: true,
     modelName: 'post'
   }
-)
+);
 
 module.exports = Post;

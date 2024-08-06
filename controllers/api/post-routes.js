@@ -2,10 +2,10 @@ const router = require('express').Router();
 const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
-// get all posts
+// Get all posts
 router.get('/', (req, res) => {
   Post.findAll({
-    attributes: ['id', 'title', 'post_text', 'created_at'],
+    attributes: ['id', 'title', 'post_content', 'created_at'],
     order: [['created_at', 'DESC']],
     include: [
       {
@@ -29,12 +29,13 @@ router.get('/', (req, res) => {
   });
 });
 
+// Get a single post by id
 router.get('/:id', (req, res) => {
   Post.findOne({
     where: {
       id: req.params.id
     },
-    attributes: ['id', 'title', 'post_text', 'created_at'],
+    attributes: ['id', 'title', 'post_content', 'created_at'],
     include: [
       {
         model: User,
@@ -63,10 +64,11 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.post('/', withAuth, (req, res) => {  
+// Create a new post
+router.post('/', withAuth, (req, res) => {
   Post.create({
     title: req.body.title,
-    post_text: req.body.post_text,
+    post_content: req.body.post_content, // Updated column name
     user_id: req.session.user_id
   })
     .then(dbPostData => res.json(dbPostData))
@@ -76,11 +78,12 @@ router.post('/', withAuth, (req, res) => {
     });
 });
 
+// Update a post
 router.put('/:id', withAuth, (req, res) => {
   Post.update(
     {
       title: req.body.title,
-      post_text: req.body.post_text
+      post_content: req.body.post_content // Updated column name
     },
     {
       where: {
@@ -101,6 +104,7 @@ router.put('/:id', withAuth, (req, res) => {
     });
 });
 
+// Delete a post
 router.delete('/:id', withAuth, (req, res) => {
   Post.destroy({
     where: {

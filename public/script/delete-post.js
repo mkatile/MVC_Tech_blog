@@ -1,27 +1,32 @@
 // Function to delete a post
 async function deleteFormHandler(event) {
-    event.preventDefault();
-    
-    const id = window.location.toString().split('/')[
-        window.location.toString().split('/').length - 1
-      ];
+  event.preventDefault();
 
-    const response = await fetch(`/api/posts/${id}`, {
-        method: 'DELETE',
-        body: JSON.stringify({
-          post_id: id
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+  // Get the ID from the URL
+  const id = window.location.toString().split('/').pop();
+
+  // Confirm the action with the user
+  const confirmDelete = confirm('Are you sure you want to delete this post?');
+  if (!confirmDelete) return;
+
+  try {
+      const response = await fetch(`/api/posts/${id}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json'
+          }
       });
-      
+
       if (response.ok) {
-        document.location.replace('/dashboard/');
+          document.location.replace('/dashboard/');
       } else {
-        alert(response.statusText);
+          const error = await response.json();
+          alert(`Error: ${error.message || response.statusText}`);
       }
-    
+  } catch (error) {
+      console.error('Failed to delete post:', error);
+      alert('An error occurred while deleting the post.');
   }
-  
-  document.querySelector('.delete-post-btn').addEventListener('click', deleteFormHandler);
+}
+
+document.querySelector('.delete-post-btn').addEventListener('click', deleteFormHandler);

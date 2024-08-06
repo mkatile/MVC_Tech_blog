@@ -3,7 +3,7 @@ const router = express.Router();
 const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
-// get all posts
+// Get all posts for the logged-in user
 router.get('/', withAuth, (req, res) => {
   Post.findAll({
     where: {
@@ -27,21 +27,22 @@ router.get('/', withAuth, (req, res) => {
     ]
   })
   .then(dbPostData => {
-    //serialize the data before passing to the template
+    // Serialize the data before passing to the template
     const posts = dbPostData.map(post => post.get({ plain: true }));
-    res.render('dashboard', { posts, loggedIn: true });
+    res.render('dashboard', { posts, loggedIn: req.session.loggedIn });
   })
   .catch(err => {
-    console.log(err);
+    console.error(err);
     res.status(500).json(err);
   });
 });
 
-//get a single post
+// Get a single post for editing
 router.get('/edit/:id', withAuth, (req, res) => {
   Post.findOne({
     where: {
-      id: req.params.id
+      id: req.params.id,
+      user_id: req.session.user_id // Ensure the post belongs to the logged-in user
     },
     attributes: ['id', 'title', 'post_text', 'created_at'],
     include: [
@@ -64,23 +65,23 @@ router.get('/edit/:id', withAuth, (req, res) => {
         res.status(404).json({ message: 'No post found with this id' });
         return;
       }
-      //serialize the data
+      // Serialize the data
       const post = dbPostData.get({ plain: true });
-      // pass to the template
+      // Pass to the template
       res.render('edit-post', {
         post,
         loggedIn: req.session.loggedIn
       });
     })
     .catch(err => {
-      console.log(err);
+      console.error(err);
       res.status(500).json(err);
     });
 });
 
-router.get('/new', (req, res) => {
-  res.render('new-post');
+// Render form to create a new post
+router.get('/new', withAuth, (req, res) => {
+  res.render('new-post', { loggedIn: req.session.loggedIn });
 });
-
 
 module.exports = router;

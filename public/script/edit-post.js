@@ -1,30 +1,34 @@
 // Function to edit a post
-
 async function editFormHandler(event) {
-    event.preventDefault();
-  
-    const title = document.querySelector('input[name="post-title"]').value;
-    const post_content = document.querySelector('input[name="post-content"]').value;
-    const id = window.location.toString().split('/')[
-        window.location.toString().split('/').length - 1
-      ];
+  event.preventDefault();
 
-    const response = await fetch(`/api/posts/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({
-            title,
-            post_content
-        }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
+  // Get values from the form
+  const title = document.querySelector('input[name="post-title"]').value;
+  const post_content = document.querySelector('textarea[name="post-content"]').value; // Changed to textarea if applicable
+  const id = window.location.toString().split('/').pop(); // Get the post ID from the URL
+
+  try {
+      const response = await fetch(`/api/posts/${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+              title,
+              post_content
+          }),
+          headers: {
+              'Content-Type': 'application/json'
+          }
       });
-      
+
       if (response.ok) {
-        document.location.replace('/dashboard/');
+          document.location.replace('/dashboard/');
       } else {
-        alert(response.statusText);
+          const error = await response.json();
+          alert(`Error: ${error.message || response.statusText}`);
       }
+  } catch (error) {
+      console.error('Failed to update post:', error);
+      alert('An error occurred while updating the post.');
   }
-  
-  document.querySelector('.edit-post-form').addEventListener('submit', editFormHandler);
+}
+
+document.querySelector('.edit-post-form').addEventListener('submit', editFormHandler);

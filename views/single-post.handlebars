@@ -1,19 +1,23 @@
+<!-- Post Information -->
 {{> post-info post}}
 
+<!-- Comment Form (Visible if logged in) -->
 {{#if loggedIn}}
 <form class="comment-form">
   <div>
-    <textarea name="comment-body"></textarea>
+    <label for="comment-body">Add a Comment:</label>
+    <textarea id="comment-body" name="comment-body" placeholder="Write your comment here..."></textarea>
   </div>
-
   <div>
-    <button type="submit">add comment</button>    
+    <button type="submit">Add Comment</button>
   </div>
 </form>
 {{/if}}
 
+<!-- Display Comments -->
 {{> comments post.comments}}
 
+<!-- Include Comment Handling Script (Only if logged in) -->
 {{#if loggedIn}}
 <script src="/public/script/comment.js"></script>
 {{/if}}

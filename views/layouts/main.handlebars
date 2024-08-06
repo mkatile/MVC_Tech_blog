@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MVC Tech Blog - A platform for tech enthusiasts to share and discuss blog posts.">
   <title>MVC Tech Blog</title>
   <link rel="stylesheet" href="/public/css/style.css">
 </head>
@@ -11,29 +12,22 @@
 <body>
   <div class="wrapper">
     <header>
-      <div>
-        <h1 class="home-title">MVC Tech Blog</h1>
-      </div>
-      <div>
-        <nav>
-          <a href="/">Home</a>
-           <a href="/dashboard">Dashboard</a>
-          {{#if loggedIn}}
-          <a href="/" id="logout">Logout</a>
-          {{else}}
-          <a href="/login">Login</a>
-          {{/if}}
-        </nav>
-      </div>
-      <div>
-        <h1 class="home-title">MVC Tech Blog</h1>
-      </div>
+      <h1 class="home-title">MVC Tech Blog</h1>
+      <nav>
+        <a href="/" aria-label="Home">Home</a>
+        <a href="/dashboard" aria-label="Dashboard">Dashboard</a>
+        {{#if loggedIn}}
+        <a href="/" id="logout" aria-label="Logout">Logout</a>
+        {{else}}
+        <a href="/login" aria-label="Login">Login</a>
+        {{/if}}
+      </nav>
     </header>
     <main>
       {{{ body }}}
     </main>
     <footer>
-      Thanks for visiting!
+      <p>Thanks for visiting!</p>
     </footer>
   </div>
   {{#if loggedIn}}
@@ -42,3 +36,4 @@
 </body>
 
 </html>
+
