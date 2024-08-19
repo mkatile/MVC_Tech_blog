@@ -65,19 +65,20 @@ router.get('/:id', (req, res) => {
 });
 
 // Create a new post
-router.post('/', withAuth, (req, res) => {
-  Post.create({
-    title: req.body.title,
-    post_content: req.body.post_content, // Updated column name
-    user_id: req.session.user_id
-  })
-    .then(dbPostData => res.json(dbPostData))
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
+router.post('/', withAuth, async (req, res) => {
+  try {
+    const newPost = await Post.create({
+      title: req.body.title,
+      post_content: req.body.post_text,  // Ensure you're using the correct field name
+      user_id: req.session.user_id,
     });
-});
 
+    res.status(200).json(newPost);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json(err);
+  }
+});
 // Update a post
 router.put('/:id', withAuth, (req, res) => {
   Post.update(

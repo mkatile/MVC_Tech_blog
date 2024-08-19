@@ -6,8 +6,6 @@ async function signupFormHandler(event) {
   const username = document.querySelector('#username-signup').value.trim();
   const email = document.querySelector('#email-signup').value.trim();
   const password = document.querySelector('#password-signup').value.trim();
-  const twitter = document.querySelector('#twitter-signup').value.trim();
-  const github = document.querySelector('#github-signup').value.trim();
 
   // Check that required fields are filled out
   if (username && email && password) {
@@ -17,8 +15,6 @@ async function signupFormHandler(event) {
               body: JSON.stringify({
                   username,
                   email,
-                  twitter,
-                  github,
                   password
               }),
               headers: { 'Content-Type': 'application/json' }

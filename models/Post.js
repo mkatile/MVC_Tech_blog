@@ -15,24 +15,34 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    post_content: { // Make sure this matches the database column name
+    post_content: { 
       type: DataTypes.TEXT,
       allowNull: false
     },
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'user',
+        model: 'users', 
         key: 'id'
       }
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     }
   },
   {
     sequelize,
-    timestamps: true, // Ensure this is enabled if you are using created_at and updated_at
+    timestamps: true, 
     freezeTableName: true,
     underscored: true,
-    modelName: 'post'
+    modelName: 'posts' 
   }
 );
 

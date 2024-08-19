@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "mahadi",
+    "password": "H@diaratoun",
+    "database": "tech_blog_db",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "mahadi",
+    "password": "H@diaratoun",
+    "database": "tech_blog_db_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "mahadi",
+    "password": "H@diaratoun",
+    "database": "tech_blog_db",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}

@@ -4,6 +4,8 @@ const { Post, User, Comment } = require('../models');
 
 // Homepage route
 router.get('/', (req, res) => {
+  console.log('Is Post defined?', Post !== undefined); // Debugging check
+
   Post.findAll({
     attributes: ['id', 'title', 'created_at', 'post_content'],
     include: [
@@ -12,12 +14,12 @@ router.get('/', (req, res) => {
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ['username', 'twitter', 'github']
+          attributes: ['username']
         }
       },
       {
         model: User,
-        attributes: ['username', 'twitter', 'github']
+        attributes: ['username']
       }
     ]
   })
@@ -25,7 +27,7 @@ router.get('/', (req, res) => {
     const posts = dbPostData.map(post => post.get({ plain: true }));
     res.render('homepage', {
       posts,
-      loggedIn: req.session.loggedIn
+      loggedIn: req.session.loggedIn // Use lowercase `loggedIn`
     });
   })
   .catch(err => {
@@ -65,12 +67,12 @@ router.get('/post/:id', (req, res) => {
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ['username', 'twitter', 'github']
+          attributes: ['username']
         }
       },
       {
         model: User,
-        attributes: ['username', 'twitter', 'github']
+        attributes: ['username']
       }
     ]
   })

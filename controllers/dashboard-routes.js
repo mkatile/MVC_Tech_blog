@@ -9,7 +9,7 @@ router.get('/', withAuth, (req, res) => {
     where: {
       user_id: req.session.user_id
     },
-    attributes: ['id', 'title', 'post_text', 'created_at'],
+    attributes: ['id', 'title', 'post_content', 'created_at'],  // Changed from 'post_text' to 'post_content'
     order: [['created_at', 'DESC']],
     include: [
       {
@@ -32,7 +32,7 @@ router.get('/', withAuth, (req, res) => {
     res.render('dashboard', { posts, loggedIn: req.session.loggedIn });
   })
   .catch(err => {
-    console.error(err);
+    console.error('Database error:', err);  // Improved error logging
     res.status(500).json(err);
   });
 });
@@ -81,7 +81,11 @@ router.get('/edit/:id', withAuth, (req, res) => {
 
 // Render form to create a new post
 router.get('/new', withAuth, (req, res) => {
-  res.render('new-post', { loggedIn: req.session.loggedIn });
+  console.log('New post route hit');
+  console.log('Session LoggedIn:', req.session.loggedIn);
+  res.render('create-post', { loggedIn: req.session.loggedIn });
 });
+
+
 
 module.exports = router;

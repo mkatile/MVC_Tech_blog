@@ -45,8 +45,10 @@ router.get('/:id', (req, res) => {
 
 // Create a new user
 router.post('/', (req, res) => {
+  console.log('Received data:', req.body);
   User.create({
     username: req.body.username,
+    email: req.body.email,
     password: req.body.password
   })
   .then(dbUserData => {
@@ -59,22 +61,27 @@ router.post('/', (req, res) => {
     });
   })
   .catch(err => {
-    console.error(err);
+    console.error('Error creating user:', err);
     res.status(500).json(err);
   });
 });
 
+
 // Login route
 router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password required' });
+  }
+
   User.findOne({
-    where: { username: req.body.username }
+    where: { email: email } // Ensure you're querying by email
   })
   .then(dbUserData => {
     if (!dbUserData) {
-      res.status(400).json({ message: 'Username not found' });
-      return;
+      return res.status(400).json({ message: 'Email not found' });
     }
-
     const validPassword = dbUserData.checkPassword(req.body.password);
     if (!validPassword) {
       res.status(400).json({ message: 'Incorrect password' });

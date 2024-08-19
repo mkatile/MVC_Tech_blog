@@ -1,6 +1,7 @@
 // Function to add a post
 async function newFormHandler(event) {
   event.preventDefault();
+  console.log('Form submitted'); 
 
   const title = document.querySelector('input[name="post-title"]').value.trim();
   const post_text = document.querySelector('textarea[name="post-text"]').value.trim();
@@ -12,7 +13,7 @@ async function newFormHandler(event) {
   }
 
   try {
-      const response = await fetch(`/api/posts`, {
+      const response = await fetch(`/api/post-routes`, {
           method: 'POST',
           body: JSON.stringify({
               title,
